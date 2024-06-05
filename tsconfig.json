@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",                         // Targeting modern JavaScript
+    "module": "ESNext",                         // Using ESNext modules
+    "lib": ["ESNext"],                          // Including necessary libraries
+    "jsx": "react-native",                      // Proper JSX handling for React Native
+    "noEmit": true,                             // No emit output, React Native handles transpilation
+    "strict": true,                             // Enable all strict type-checking options
+    "moduleResolution": "node",                 // Module resolution strategy
+    "allowSyntheticDefaultImports": true,       // Allow synthetic default imports
+    "esModuleInterop": true,                    // Enable compatibility with ES modules
+    "skipLibCheck": true,                       // Skip type checking of all declaration files
+    "resolveJsonModule": true,                  // Allow importing .json files
+    "isolatedModules": true,                    // Ensure each file can be transpiled separately
+    "baseUrl": ".",                             // Base directory to resolve non-relative module names
+    // "paths": {                                  // Path mapping to make imports cleaner
+    //   "@components/*": ["src/components/*"],
+    //   "@screens/*": ["src/screens/*"],
+    //   "@assets/*": ["src/assets/*"]
+    // }
+  },
+  "exclude": [
+    "node_modules",                             // Exclude node_modules
+    "babel.config.js",                          // Exclude Babel config
+    "metro.config.js",                          // Exclude Metro config
+    "jest.config.js"                            // Exclude Jest config
+  ],
+  // "include": [
+  //   "src/**/*.ts",                              // Include all TypeScript files in src
+  //   "src/**/*.tsx"                              // Include all TSX files in src
+  // ]
+}
