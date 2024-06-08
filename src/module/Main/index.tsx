@@ -7,9 +7,7 @@ import { addToCart, removeToCart } from '../../redux/action';
 import { useDispatch } from 'react-redux';
 import { RootStackParamList } from '../../navigation/types';
 import { RouterType } from '../../navigation/types';
-import { StackNavigationProp } from '@react-navigation/stack';
-
-type NavigationType = StackNavigationProp<RootStackParamList>;
+import { NavigationType } from '../../navigation/router';
 
 const Main = ({ navigation }: { navigation: NavigationType }) => {
   const dispatch = useDispatch();
