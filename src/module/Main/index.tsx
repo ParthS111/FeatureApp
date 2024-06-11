@@ -1,51 +1,106 @@
-import { SafeAreaView, StyleSheet, ScrollView, Button } from 'react-native';
-import React from 'react';
-import Header from '../../components/Header';
-import { products } from '../../theme/data';
-import Product from '../../components/Product';
-import { addToCart, removeToCart } from '../../redux/action';
-import { useDispatch } from 'react-redux';
-import { RootStackParamList } from '../../navigation/types';
-import { RouterType } from '../../navigation/types';
-import { StackNavigationProp } from '@react-navigation/stack';
+import React, { useState } from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  TextInput,
+  FlatList,
+} from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { addTodo } from '../../redux/reducer/todoList';
+import { increment, decrement } from '../../redux/reducer/counterslice';
+import { RootState } from '../../redux/store';
 
-type NavigationType = StackNavigationProp<RootStackParamList>;
-
-const Main = ({ navigation }: { navigation: NavigationType }) => {
+const Main = () => {
+  const reduxState = useSelector((state: RootState) => state.counter);
+  const todoListState = useSelector((state: RootState) => state.todoList);
   const dispatch = useDispatch();
+  const [newTodoText, setNewTodoText] = useState<string>('');
 
-  const handleAddToCart = (item: any, isAddedCart: boolean) => {
-    if (isAddedCart) {
-      dispatch(removeToCart(item));
-    } else {
-      dispatch(addToCart(item));
-    }
+  const incrementValue = () => {
+    dispatch(increment());
   };
 
-  const onNextScreen = () => {
-    navigation.navigate(RouterType.UserList);
+  const decrementValue = () => {
+    dispatch(decrement());
+  };
+
+  const handleAddTodo = () => {
+    dispatch(addTodo({ text: newTodoText }));
+    setNewTodoText('');
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <Button title="Go to user list" onPress={onNextScreen} />
-      <Header />
-      <ScrollView contentContainerStyle={styles.container}>
-        {products?.map(item => (
-          <Product key={item?.id} item={item} onPress={handleAddToCart} />
-        ))}
-      </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.counterContainer}>
+        <Button title="-" onPress={decrementValue} />
+        <Text style={styles.countText}>{reduxState?.value}</Text>
+        <Button title="+" onPress={incrementValue} />
+      </View>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          value={newTodoText}
+          onChangeText={setNewTodoText}
+          placeholder="Enter new todo"
+        />
+        <Button title="Add" onPress={handleAddTodo} />
+      </View>
+      <FlatList
+        style={styles.list}
+        data={todoListState?.list}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.todoItem}>
+            <Text>{item.text}</Text>
+          </View>
+        )}
+      />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#f8f8f8',
-  },
   container: {
-    padding: 16,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  counterContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: 200,
+    marginTop: 100,
+  },
+  countText: {
+    fontSize: 32,
+    marginHorizontal: 20,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+    marginTop: 100,
+  },
+  input: {
+    flex: 1,
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+  },
+  list: {
+    flex: 1,
+  },
+  todoItem: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
   },
 });
 
