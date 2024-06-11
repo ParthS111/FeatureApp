@@ -1,5 +1,5 @@
 import { ResultSet, SQLiteDatabase } from 'react-native-sqlite-storage';
-import { connectToDatabase } from './db';
+import { connectToDatabase, removeTable, Table } from './db';
 
 export interface UserListProps {
   id?: string;
@@ -51,6 +51,17 @@ export const getUserInfo = async (): Promise<UserListProps | null> => {
   }
 };
 
+export const deleteUserInfo = async (tableName: Table): Promise<boolean> => {
+  try {
+    await removeTable(tableName);
+
+    return true;
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+    return false;
+  }
+};
+
 export const addContact = async (userList: UserListProps) => {
   const db: SQLiteDatabase = await connectToDatabase();
   const insertQuery = `
@@ -71,7 +82,7 @@ export const addContact = async (userList: UserListProps) => {
   }
 };
 
-export const getContacts = async (): Promise<UserListProps[]> => {
+export const getUserList = async (): Promise<UserListProps[]> => {
   try {
     const db: SQLiteDatabase = await connectToDatabase();
     const contacts: UserListProps[] = [];

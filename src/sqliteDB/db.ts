@@ -4,7 +4,7 @@ import {
   SQLiteDatabase,
 } from 'react-native-sqlite-storage';
 
-type Table = 'Contacts' | 'UserList' | 'UserInfo' | 'Budget';
+export type Table = 'Contacts' | 'UserList' | 'UserInfo' | 'Budget';
 
 export const connectToDatabase = async () => {
   return openDatabase(
